@@ -4,7 +4,7 @@ import React from "react";
 const Top = () => {
   return (
     <Box>
-      <Text>test</Text>
+      <Text></Text>
     </Box>
   );
 };
