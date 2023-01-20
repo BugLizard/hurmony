@@ -90,7 +90,17 @@ const ProfileEdit = () => {
                 placeholder="プロフィールを入力"
               />
             </Center>
-            <hr />
+          </Container>
+          <Container marginTop="25px">
+            <Center
+              display="flex"
+              justifyContent="space-around"
+              alignItems="center"
+              marginBottom="20px"
+            >
+              <Button width="100px">編集</Button>
+              <Button width="100px">戻る</Button>
+            </Center>
           </Container>
         </Box>
       </Center>
