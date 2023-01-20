@@ -3,22 +3,17 @@ import {
   Box,
   Center,
   Container,
-  Flex,
   Heading,
   Text,
   WrapItem,
 } from "@chakra-ui/react";
 import React from "react";
-import NextImage from "next/image";
-
-import dummyImage from "../img/piano_upright.png";
 import Header from "../Components/Header/Header";
 
 const MyPage = () => {
   return (
     <Box>
       <Header />
-
       <Center>
         <Box
           marginTop="3rem"
