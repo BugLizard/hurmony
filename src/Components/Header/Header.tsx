@@ -17,6 +17,9 @@ const Header = () => {
           <Heading as="h1" fontSize="2xl" cursor="pointer" color="white">
             Tutorial
           </Heading>
+          <Heading as="h1" fontSize="2xl" cursor="pointer" color="white">
+            Profile Edit
+          </Heading>
         </Flex>
       </Container>
     </Box>

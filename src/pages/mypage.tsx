@@ -85,17 +85,6 @@ const MyPage = () => {
               </Heading>
             </Center>
           </Container>
-          <Container marginTop="25px" marginBottom="25px">
-            <Center>
-              <iframe
-                width="560"
-                height="315"
-                src="https://www.youtube.com/embed/KAIjlRl5Al4"
-                title="YouTube video player"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              ></iframe>
-            </Center>
-          </Container>
           <Container>
             <Center>
               <Heading as="h2" size="lg" color="white" marginTop="20px">
@@ -109,6 +98,13 @@ const MyPage = () => {
                 marginBottom="10px"
                 fontSize="2xl"
               >
+                <iframe
+                  width="560"
+                  height="315"
+                  src="https://www.youtube.com/embed/KAIjlRl5Al4"
+                  title="YouTube video player"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                ></iframe>
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magni,
                 reiciendis illo. Quasi ullam saepe quo corporis iusto maxime,
                 inventore error ducimus reprehenderit aliquam consequuntur
