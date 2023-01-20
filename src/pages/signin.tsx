@@ -48,7 +48,7 @@ const Signin = () => {
               placeholder="ID(メールアドレス)"
               size="sm"
               width="auto"
-              variant="flushed"
+              variant="filled"
             />
             <InputGroup size="md">
               <Input
@@ -58,7 +58,7 @@ const Signin = () => {
                 type={passwordShow ? "text" : "password"}
                 size="sm"
                 width="auto"
-                variant="flushed"
+                variant="filled"
               />
               <InputRightElement>
                 <Button size="sm" onClick={handlePasswordClick}>

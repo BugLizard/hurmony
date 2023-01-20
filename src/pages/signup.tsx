@@ -1,11 +1,14 @@
 import {
   Box,
   Button,
+  Checkbox,
+  CheckboxGroup,
   FormControl,
   Heading,
   Input,
   InputGroup,
   InputRightElement,
+  Stack,
   Text,
 } from "@chakra-ui/react";
 import NextImage from "next/image";
@@ -40,7 +43,7 @@ const Signup = () => {
         <Box boxSize="-webkit-fit-content" mb="25px" marginLeft="130px">
           <FormControl>
             <Heading marginTop="5rem" fontSize="2xl">
-              Login
+              会員登録
             </Heading>
             <Input
               marginTop="1rem"
@@ -48,17 +51,17 @@ const Signup = () => {
               placeholder="ID(メールアドレス)"
               size="sm"
               width="auto"
-              variant="flushed"
+              variant="filled"
             />
             <InputGroup size="md">
               <Input
                 marginTop="10px"
                 pr="4.5rem"
-                placeholder="PASSWORD"
+                placeholder="パスワード"
                 type={passwordShow ? "text" : "password"}
                 size="sm"
                 width="auto"
-                variant="flushed"
+                variant="filled"
               />
               <InputRightElement>
                 <Button size="sm" onClick={handlePasswordClick}>
@@ -66,17 +69,31 @@ const Signup = () => {
                 </Button>
               </InputRightElement>
             </InputGroup>
+            <Input
+              marginTop="10px"
+              pr="4.5rem"
+              placeholder="ユーザー名"
+              size="sm"
+              width="auto"
+              variant="filled"
+            />
+            <CheckboxGroup>
+              <Stack
+                spacing={[1, 5]}
+                direction={["column", "row"]}
+                marginTop="10px"
+              >
+                <Checkbox value="出演者">出演者</Checkbox>
+                <Checkbox value="主催者">主催者</Checkbox>
+                <Checkbox value="両方">両方</Checkbox>
+              </Stack>
+            </CheckboxGroup>
             <br />
             <Box marginLeft="3rem" display="contents">
-              <Button>ログイン</Button>
+              <Button marginTop="10px">登録</Button>
               <br />
-              <Button marginTop="10px" marginRight="10px">
-                Googleでログイン
-              </Button>
-              <br />
-              <Button marginTop="10px">新規登録</Button>
               <Text marginTop="10px" fontSize="1xs">
-                パスワードを忘れた方はこちら
+                ログインはこちら
               </Text>
             </Box>
           </FormControl>
