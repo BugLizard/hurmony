@@ -20,12 +20,13 @@ const Signin = () => {
   const handlePasswordClick = () => setPassWordShow(!passwordShow);
   return (
     <Box display="flex" justifyContent="space-between" marginTop="100px">
-      <Box boxSize="xl" bg="">
+      <Box boxSize="left">
         <Box
-          boxSize="-webkit-fit-content"
+          boxSize="2xl"
           mb="25px"
           display="flex"
-          justifyContent="left"
+          justifyContent="flex-start"
+          marginLeft="6rem"
         >
           <NextImage
             src={logo}
@@ -36,7 +37,13 @@ const Signin = () => {
           />
         </Box>
       </Box>
-      <Box boxSize="xl" bg="#D5EEFF" borderRadius="5%" marginRight="1rem">
+      <Box
+        boxSize="xl"
+        bg="#D5EEFF"
+        borderRadius="5%"
+        marginRight="8rem"
+        marginTop="20"
+      >
         <Box boxSize="-webkit-fit-content" mb="25px" marginLeft="130px">
           <FormControl>
             <Heading marginTop="5rem" fontSize="2xl">
@@ -52,23 +59,27 @@ const Signin = () => {
             />
             <InputGroup size="md">
               <Input
-                marginTop="10px"
                 pr="4.5rem"
                 placeholder="PASSWORD"
                 type={passwordShow ? "text" : "password"}
                 size="sm"
                 width="auto"
                 variant="filled"
+                marginTop="15px"
               />
               <InputRightElement>
-                <Button size="sm" onClick={handlePasswordClick}>
+                <Button
+                  size="xs"
+                  onClick={handlePasswordClick}
+                  marginTop="25px"
+                >
                   {passwordShow ? "隠す" : "確認"}
                 </Button>
               </InputRightElement>
             </InputGroup>
             <br />
             <Box marginLeft="3rem" display="contents">
-              <Button>ログイン</Button>
+              <Button marginTop="20px">ログイン</Button>
               <br />
               <Button marginTop="10px" marginRight="10px">
                 Googleでログイン

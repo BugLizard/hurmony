@@ -23,12 +23,13 @@ const Signup = () => {
   const handlePasswordClick = () => setPassWordShow(!passwordShow);
   return (
     <Box display="flex" justifyContent="space-between" marginTop="100px">
-      <Box boxSize="xl" bg="">
+      <Box boxSize="left">
         <Box
-          boxSize="-webkit-fit-content"
+          boxSize="2xl"
           mb="25px"
           display="flex"
-          justifyContent="left"
+          justifyContent="flex-start"
+          marginLeft="6rem"
         >
           <NextImage
             src={logo}
@@ -39,14 +40,20 @@ const Signup = () => {
           />
         </Box>
       </Box>
-      <Box boxSize="xl" bg="#D5EEFF" borderRadius="5%" marginRight="1rem">
+      <Box
+        boxSize="xl"
+        bg="#D5EEFF"
+        borderRadius="5%"
+        marginRight="8rem"
+        marginTop="20"
+      >
         <Box boxSize="-webkit-fit-content" mb="25px" marginLeft="130px">
           <FormControl>
             <Heading marginTop="5rem" fontSize="2xl">
               会員登録
             </Heading>
             <Input
-              marginTop="1rem"
+              marginTop="20px"
               pr="4.5rem"
               placeholder="ID(メールアドレス)"
               size="sm"
@@ -55,7 +62,7 @@ const Signup = () => {
             />
             <InputGroup size="md">
               <Input
-                marginTop="10px"
+                marginTop="20px"
                 pr="4.5rem"
                 placeholder="パスワード"
                 type={passwordShow ? "text" : "password"}
@@ -64,13 +71,17 @@ const Signup = () => {
                 variant="filled"
               />
               <InputRightElement>
-                <Button size="sm" onClick={handlePasswordClick}>
+                <Button
+                  size="sm"
+                  onClick={handlePasswordClick}
+                  marginTop="20px"
+                >
                   {passwordShow ? "隠す" : "確認"}
                 </Button>
               </InputRightElement>
             </InputGroup>
             <Input
-              marginTop="10px"
+              marginTop="20px"
               pr="4.5rem"
               placeholder="ユーザー名"
               size="sm"
@@ -81,7 +92,7 @@ const Signup = () => {
               <Stack
                 spacing={[1, 5]}
                 direction={["column", "row"]}
-                marginTop="10px"
+                marginTop="20px"
               >
                 <Checkbox value="出演者">出演者</Checkbox>
                 <Checkbox value="主催者">主催者</Checkbox>
