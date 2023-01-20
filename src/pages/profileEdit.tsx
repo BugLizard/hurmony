@@ -15,10 +15,6 @@ import React from "react";
 const ProfileEdit = () => {
   return (
     <Box>
-      <Center marginTop="50px">
-        <Heading color="#F99F48">プロフィール編集</Heading>
-      </Center>
-
       <Center>
         <Box
           marginTop="3rem"
