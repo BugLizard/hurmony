@@ -3,6 +3,7 @@ import React from "react";
 
 import NextImage from "next/image";
 import musicalNote from "../img/sixteenth_note-1.svg";
+import TutorialModal from "../Components/Modal/MatchingModal";
 
 //ハートだとこれみよがしすぎるので音符に変える
 
@@ -10,9 +11,7 @@ const Matching = () => {
   return (
     <Box>
       <Center marginTop="300px">
-        <Button size="lg" height="100px" width="300px" colorScheme="facebook">
-          マッチング開始
-        </Button>
+        <TutorialModal />
       </Center>
       {/* スタートボタン押下、マッチングで下記コメントアウト画面へ */}
       {/* <Center>
