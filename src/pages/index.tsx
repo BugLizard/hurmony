@@ -13,8 +13,8 @@ const Top = () => {
           src={logo}
           className="HurmonyLogo"
           alt="HurmonyLogo"
-          height="800"
-          width="800"
+          height="700"
+          width="700"
         />
       </Box>
       <Center>
