@@ -1,3 +1,4 @@
+import MatchingTargetModal from "@/src/Components/Modal/MatchingTargetModal";
 import {
   Avatar,
   Box,
@@ -73,16 +74,8 @@ const MyPage = () => {
             <hr />
           </Container>
           <Container>
-            <Center>
-              <Heading
-                as="h2"
-                size="lg"
-                color="white"
-                marginTop="20px"
-                marginBottom="20px"
-              >
-                マッチング件数 : 3件
-              </Heading>
+            <Center marginTop="20px" marginBottom="20px">
+              <MatchingTargetModal />
             </Center>
           </Container>
           <Container>
