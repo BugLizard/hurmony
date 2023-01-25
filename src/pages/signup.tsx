@@ -21,6 +21,10 @@ import logo from "../img/HurmonyTrans.png";
 const Signup = () => {
   const [passwordShow, setPassWordShow] = useState(false);
   const handlePasswordClick = () => setPassWordShow(!passwordShow);
+
+  const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  };
   return (
     <Box display="flex" justifyContent="space-between" marginTop="100px">
       <Box boxSize="left">
@@ -48,13 +52,14 @@ const Signup = () => {
         marginTop="20"
       >
         <Box boxSize="-webkit-fit-content" mb="25px" marginLeft="130px">
-          <FormControl>
+          <FormControl onSubmit={handleSubmit}>
             <Heading marginTop="5rem" fontSize="2xl">
               会員登録
             </Heading>
             <Input
               marginTop="20px"
               pr="4.5rem"
+              type="email"
               placeholder="ID(メールアドレス)"
               size="sm"
               width="auto"

@@ -1,11 +1,27 @@
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
+import { RecoilRoot } from "recoil";
+import { useAuth } from "../lib/auth";
+
+type Props = {
+  children: JSX.Element;
+};
+
+const Auth = ({ children }: Props): JSX.Element => {
+  const isLoading = useAuth();
+
+  return isLoading ? <p>Loading...</p> : children;
+};
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
-    <ChakraProvider>
-      <Component {...pageProps} />
-    </ChakraProvider>
+    <RecoilRoot>
+      <Auth>
+        <ChakraProvider>
+          <Component {...pageProps} />
+        </ChakraProvider>
+      </Auth>
+    </RecoilRoot>
   );
 }
 
