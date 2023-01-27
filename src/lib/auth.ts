@@ -7,30 +7,30 @@ import {
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { auth } from "./firebase/firebase";
-import { UserState, userState } from "./recoil/authRecoil";
+import { AuthState, authState } from "./recoil/authRecoil";
 
-export const login = (): Promise<void> => {
+export const GoogleLogin = (): Promise<void> => {
   const provider = new GoogleAuthProvider();
   return signInWithRedirect(auth, provider);
 };
 
-export const logout = (): Promise<void> => {
+export const GoogleLogout = (): Promise<void> => {
   return signOut(auth);
 };
 
-export const useAuth = (): boolean => {
+export const GoogleUseAuth = (): boolean => {
   const [isLoading, setIsLoading] = useState(true);
-  const setUser = useSetRecoilState(userState);
+  const setUserStateForGoogle = useSetRecoilState(authState);
 
   useEffect(() => {
     return onAuthStateChanged(auth, (user) => {
-      setUser(user);
+      setUserStateForGoogle(user);
       setIsLoading(false);
     });
-  }, [setUser]);
+  }, [setUserStateForGoogle]);
   return isLoading;
 };
 
-export const useUser = (): UserState => {
-  return useRecoilValue(userState);
+export const GoogleUseUser = (): AuthState => {
+  return useRecoilValue(authState);
 };

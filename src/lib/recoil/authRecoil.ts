@@ -1,10 +1,13 @@
-import { User } from "firebase/auth";
 import { atom } from "recoil";
 
-export type UserState = User | null;
+export type AuthState = UserState | null;
+export type UserState = {
+  id: string | null;
+  name: string | null;
+  email: string | null;
+};
 
-export const userState = atom<UserState>({
-  key: "userState",
+export const authState = atom<AuthState>({
+  key: "authState",
   default: null,
-  dangerouslyAllowMutability: true,
 });

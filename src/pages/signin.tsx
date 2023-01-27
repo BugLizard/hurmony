@@ -8,16 +8,47 @@ import {
   InputRightElement,
   Text,
 } from "@chakra-ui/react";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import NextImage from "next/image";
 import React, { useState } from "react";
+import { SetterOrUpdater, useSetRecoilState } from "recoil";
 
 import logo from "../img/HurmonyTrans.png";
+import { GoogleLogin, GoogleUseUser } from "../lib/auth";
+import { auth } from "../lib/firebase/firebase";
+import { authState, AuthState, UserState } from "../lib/recoil/authRecoil";
 
 //Todo:一通り作ったらflex対応
 
 const Signin = () => {
   const [passwordShow, setPassWordShow] = useState(false);
   const handlePasswordClick = () => setPassWordShow(!passwordShow);
+
+  const setAuth: SetterOrUpdater<AuthState> = useSetRecoilState(authState);
+  const provider = new GoogleAuthProvider();
+  const GoogleUser = GoogleUseUser();
+
+  const handleGoogleLogin = () => {
+    GoogleLogin().catch((error) => console.error(error));
+  };
+
+  const handleLogin = async () => {
+    try {
+      await signInWithPopup(auth, provider).then((res) => {
+        if (res) {
+          const tempUser = {
+            id: res.user.uid,
+            name: res.user.displayName,
+            email: res.user.email,
+          };
+          setAuth(tempUser);
+        }
+      });
+    } catch {
+      console.log("ログインに失敗しました");
+    }
+  };
+
   return (
     <Box display="flex" justifyContent="space-between" marginTop="100px">
       <Box boxSize="left">
@@ -81,7 +112,11 @@ const Signin = () => {
             <Box marginLeft="3rem" display="contents">
               <Button marginTop="20px">ログイン</Button>
               <br />
-              <Button marginTop="10px" marginRight="10px">
+              <Button
+                marginTop="10px"
+                marginRight="10px"
+                onClick={handleGoogleLogin}
+              >
                 Googleでログイン
               </Button>
               <br />

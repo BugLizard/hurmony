@@ -1,14 +1,15 @@
 import { ChakraProvider } from "@chakra-ui/react";
+import ReactDOM from "react-dom/client";
 import type { AppProps } from "next/app";
 import { RecoilRoot } from "recoil";
-import { useAuth } from "../lib/auth";
+import { GoogleUseAuth } from "../lib/auth";
 
 type Props = {
   children: JSX.Element;
 };
 
 const Auth = ({ children }: Props): JSX.Element => {
-  const isLoading = useAuth();
+  const isLoading = GoogleUseAuth();
 
   return isLoading ? <p>Loading...</p> : children;
 };
