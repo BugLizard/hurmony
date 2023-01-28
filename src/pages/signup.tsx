@@ -18,7 +18,6 @@ import { addDoc, collection } from "firebase/firestore";
 import NextImage from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { deflate } from "zlib";
 
 import logo from "../img/HurmonyTrans.png";
 import { auth, db } from "../lib/firebase/firebase";
