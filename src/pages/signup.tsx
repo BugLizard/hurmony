@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Center,
   Checkbox,
   CheckboxGroup,
   FormControl,
@@ -13,13 +14,14 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { addDoc } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import NextImage from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { deflate } from "zlib";
 
 import logo from "../img/HurmonyTrans.png";
-import { auth } from "../lib/firebase/firebase";
+import { auth, db } from "../lib/firebase/firebase";
 
 //Todo:一通り作ったらflex対応
 
@@ -31,19 +33,17 @@ const Signup = () => {
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
+  const [userDivCheck, setUserDivCheck] = useState([]);
 
   //パスワード表示切り替え
   const handlePasswordClick = () => setPassWordShow(!passwordShow);
-
-  //未入力エラー
-  const isNameNoneError = userName === "";
-  const isEmailNoneError = userEmail === "";
-  const isPasswordNoneError = userPassword === "";
 
   const router = useRouter();
 
   //会員登録処理
   const singUpHandler = async () => {
+    const usersCollectionRef = collection(db, "users");
+
     createUserWithEmailAndPassword(auth, userEmail, userPassword)
       .then((userCredential) => {
         const user = userCredential.user;
@@ -51,7 +51,14 @@ const Signup = () => {
       .catch((error) => {
         const errorCode = error.code;
         const ErrorMessage = error.message;
-        alert("エラー：" + errorCode + ErrorMessage);
+        alert(
+          "エラー：" +
+            "エラーコード<" +
+            errorCode +
+            ">エラーメッセージ<" +
+            ErrorMessage +
+            ">"
+        );
       });
 
     const documentRef = await addDoc(usersCollectionRef, {
@@ -146,7 +153,7 @@ const Signup = () => {
 
           <FormControl isRequired>
             <FormLabel marginTop="20px">利用区分(2つ選択可)</FormLabel>
-            <CheckboxGroup>
+            <CheckboxGroup onChange={(e) => {}}>
               <Stack
                 spacing={[1, 5]}
                 direction={["column", "row"]}
@@ -159,15 +166,27 @@ const Signup = () => {
           </FormControl>
 
           <br />
-          <Box marginLeft="3rem" display="contents">
-            <Button marginTop="10px" onClick={singUpHandler}>
-              登録
-            </Button>
-            <br />
-            <Text marginTop="10px" fontSize="1xs">
-              ログインはこちら
-            </Text>
-          </Box>
+          <Center>
+            <Box marginLeft="3rem" display="contents">
+              <Button
+                marginTop="10px"
+                onClick={singUpHandler}
+                disabled={
+                  userEmail == "" || userName == "" || userPassword == ""
+                }
+              >
+                登録
+              </Button>
+              <br />
+            </Box>
+          </Center>
+          <Center>
+            <Box marginLeft="3rem" display="contents">
+              <Text marginTop="10px" fontSize="1xs">
+                ログインはこちら
+              </Text>
+            </Box>
+          </Center>
         </Box>
       </Box>
     </Box>
