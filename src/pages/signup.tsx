@@ -64,7 +64,6 @@ const Signup = () => {
       return newDivChecks;
     });
     setDivCheck(newDivChecks);
-    setCheckFlag(!checkFlag);
   };
 
   //会員登録処理
@@ -124,7 +123,7 @@ const Signup = () => {
       >
         <Box boxSize="-webkit-fit-content" mb="25px" marginLeft="130px">
           <FormControl isRequired>
-            <Heading marginTop="5rem" fontSize="2xl">
+            <Heading marginTop="2rem" fontSize="2xl">
               会員登録
             </Heading>
             <FormLabel marginTop="20px">ID（メールアドレス）</FormLabel>
@@ -192,7 +191,10 @@ const Signup = () => {
                     <Checkbox
                       id={check.name}
                       value={check.name}
-                      onChange={checkBoxHandler}
+                      onChange={(e) => {
+                        checkBoxHandler(e);
+                        setCheckFlag(!checkFlag);
+                      }}
                     >
                       {check.name}
                     </Checkbox>
@@ -201,18 +203,16 @@ const Signup = () => {
               );
             })}
           </FormControl>
-
           <br />
           <Center>
             <Box marginLeft="3rem" display="contents">
               <Button
-                marginTop="10px"
                 onClick={singUpHandler}
-                disabled={
+                isDisabled={
                   userEmail == "" ||
                   userName == "" ||
                   userPassword == "" ||
-                  checkFlag == true
+                  checkFlag == false
                 }
               >
                 登録
