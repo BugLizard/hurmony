@@ -18,17 +18,22 @@ export const GoogleLogout = (): Promise<void> => {
   return signOut(auth);
 };
 
-export const GoogleUseAuth = (): boolean => {
+export const GoogleUseAuth = () => {
   const [isLoading, setIsLoading] = useState(true);
   const setUserStateForGoogle = useSetRecoilState(authState);
 
   useEffect(() => {
     return onAuthStateChanged(auth, (user) => {
+      if (!user) return;
+      console.log(user);
+      debugger;
       setUserStateForGoogle(user);
       setIsLoading(false);
     });
   }, [setUserStateForGoogle]);
-  return isLoading;
+  //setIsLoading(false);
+
+  return;
 };
 
 export const GoogleUseUser = (): AuthState => {

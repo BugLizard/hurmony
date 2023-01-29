@@ -24,6 +24,11 @@ import { auth, db } from "../lib/firebase/firebase";
 
 //Todo:一通り作ったらflex対応
 
+interface DivCheck {
+  name: string;
+  checked: boolean;
+}
+
 const Signup = () => {
   //パスワード表示フラグ
   const [passwordShow, setPassWordShow] = useState(false);
@@ -32,12 +37,35 @@ const Signup = () => {
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
-  const [userDivCheck, setUserDivCheck] = useState([]);
+  //チェックボックス群
+  const [DivCheck, setDivCheck] = useState<DivCheck[]>([
+    {
+      name: "出演者",
+      checked: false,
+    },
+    {
+      name: "主催者",
+      checked: false,
+    },
+  ]);
+  const [checkFlag, setCheckFlag] = useState(false);
 
   //パスワード表示切り替え
   const handlePasswordClick = () => setPassWordShow(!passwordShow);
 
   const router = useRouter();
+
+  const checkBoxHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newDivChecks = [...DivCheck];
+    newDivChecks.map((check) => {
+      if (check.name === e.target.value) {
+        check.checked = !check.checked;
+      }
+      return newDivChecks;
+    });
+    setDivCheck(newDivChecks);
+    setCheckFlag(!checkFlag);
+  };
 
   //会員登録処理
   const singUpHandler = async () => {
@@ -60,13 +88,14 @@ const Signup = () => {
         );
       });
 
-    const documentRef = await addDoc(usersCollectionRef, {
+    await addDoc(usersCollectionRef, {
       name: userName,
       mail: userEmail,
       password: userPassword,
     });
     router.push("/mypage");
   };
+
   return (
     <Box display="flex" justifyContent="space-between" marginTop="100px">
       <Box boxSize="left">
@@ -152,16 +181,25 @@ const Signup = () => {
 
           <FormControl isRequired>
             <FormLabel marginTop="20px">利用区分(2つ選択可)</FormLabel>
-            <CheckboxGroup onChange={(e) => {}}>
-              <Stack
-                spacing={[1, 5]}
-                direction={["column", "row"]}
-                marginTop="20px"
-              >
-                <Checkbox value="出演者">出演者</Checkbox>
-                <Checkbox value="主催者">主催者</Checkbox>
-              </Stack>
-            </CheckboxGroup>
+            {DivCheck.map((check) => {
+              return (
+                <CheckboxGroup key={check.name}>
+                  <Stack
+                    spacing={[1, 5]}
+                    direction={["column", "row"]}
+                    marginTop="20px"
+                  >
+                    <Checkbox
+                      id={check.name}
+                      value={check.name}
+                      onChange={checkBoxHandler}
+                    >
+                      {check.name}
+                    </Checkbox>
+                  </Stack>
+                </CheckboxGroup>
+              );
+            })}
           </FormControl>
 
           <br />
@@ -171,7 +209,10 @@ const Signup = () => {
                 marginTop="10px"
                 onClick={singUpHandler}
                 disabled={
-                  userEmail == "" || userName == "" || userPassword == ""
+                  userEmail == "" ||
+                  userName == "" ||
+                  userPassword == "" ||
+                  checkFlag == true
                 }
               >
                 登録
