@@ -60,6 +60,11 @@ const Signup = () => {
     newDivChecks.map((check) => {
       if (check.name === e.target.value) {
         check.checked = !check.checked;
+        if (check.checked === true && checkFlag !== true) {
+          setCheckFlag(true);
+        } else if (check.checked === false && checkFlag !== false) {
+          setCheckFlag(false);
+        }
       }
       return newDivChecks;
     });
@@ -76,15 +81,12 @@ const Signup = () => {
       })
       .catch((error) => {
         const errorCode = error.code;
-        const ErrorMessage = error.message;
-        alert(
-          "エラー：" +
-            "エラーコード<" +
-            errorCode +
-            ">エラーメッセージ<" +
-            ErrorMessage +
-            ">"
-        );
+
+        switch (errorCode) {
+          case "auth/invalid-email":
+            alert("正しいメールアドレスを入力してください");
+            break;
+        }
       });
 
     await addDoc(usersCollectionRef, {
@@ -193,7 +195,6 @@ const Signup = () => {
                       value={check.name}
                       onChange={(e) => {
                         checkBoxHandler(e);
-                        setCheckFlag(!checkFlag);
                       }}
                     >
                       {check.name}
