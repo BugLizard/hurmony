@@ -26,7 +26,6 @@ export const GoogleUseAuth = () => {
     return onAuthStateChanged(auth, (user) => {
       if (!user) return;
       console.log(user);
-      debugger;
       setUserStateForGoogle(user);
       setIsLoading(false);
     });

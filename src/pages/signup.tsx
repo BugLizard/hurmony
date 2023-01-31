@@ -10,15 +10,15 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Link,
   Stack,
-  Text,
 } from "@chakra-ui/react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import NextImage from "next/image";
+import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-
 import logo from "../img/HurmonyTrans.png";
 import { auth, db } from "../lib/firebase/firebase";
 
@@ -75,26 +75,23 @@ const Signup = () => {
   const singUpHandler = async () => {
     const usersCollectionRef = collection(db, "users");
 
-    createUserWithEmailAndPassword(auth, userEmail, userPassword)
-      .then((userCredential) => {
-        const user = userCredential.user;
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-
-        switch (errorCode) {
-          case "auth/invalid-email":
-            alert("正しいメールアドレスを入力してください");
-            break;
-        }
+    try {
+      await createUserWithEmailAndPassword(auth, userEmail, userPassword);
+      await addDoc(usersCollectionRef, {
+        name: userName,
+        mail: userEmail,
+        password: userPassword,
+        divAct: DivCheck[0].checked,
+        divOrganize: DivCheck[1].checked,
       });
-
-    await addDoc(usersCollectionRef, {
-      name: userName,
-      mail: userEmail,
-      password: userPassword,
-    });
-    router.push("/mypage");
+      router.push("/mypage");
+    } catch (error: any) {
+      switch (error.toString()) {
+        case "auth/invalid-email":
+          alert("正しいメールアドレスを入力してください");
+          break;
+      }
+    }
   };
 
   return (
@@ -223,9 +220,11 @@ const Signup = () => {
           </Center>
           <Center>
             <Box marginLeft="3rem" display="contents">
-              <Text marginTop="10px" fontSize="1xs">
-                ログインはこちら
-              </Text>
+              <NextLink href={"/signin"}>
+                <Link marginTop="10px" fontSize="1xs">
+                  ログインはこちら
+                </Link>
+              </NextLink>
             </Box>
           </Center>
         </Box>
