@@ -55,6 +55,7 @@ const Signup = () => {
 
   const router = useRouter();
 
+  //checkboxの状態を管理
   const checkBoxHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newDivChecks = [...DivCheck];
     newDivChecks.map((check) => {
