@@ -8,20 +8,20 @@ type Props = {
   children: JSX.Element;
 };
 
-const Auth = ({ children }: Props): JSX.Element => {
-  const isLoading = GoogleUseAuth();
+// const Auth = ({ children }: Props): JSX.Element => {
+//   const isLoading = GoogleUseAuth();
 
-  return isLoading ? <p>Loading...</p> : children;
-};
+//   return isLoading ? <p>Loading...</p> : children;
+// };
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <RecoilRoot>
-      <Auth>
-        <ChakraProvider>
-          <Component {...pageProps} />
-        </ChakraProvider>
-      </Auth>
+      {/* <Auth> */}
+      <ChakraProvider>
+        <Component {...pageProps} />
+      </ChakraProvider>
+      {/* </Auth> */}
     </RecoilRoot>
   );
 }

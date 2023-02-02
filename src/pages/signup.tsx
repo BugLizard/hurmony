@@ -210,6 +210,7 @@ const Signup = () => {
                   userEmail == "" ||
                   userName == "" ||
                   userPassword == "" ||
+                  userPassword.length < 8 ||
                   checkFlag == false
                 }
               >

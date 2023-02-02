@@ -16,7 +16,7 @@ import { SetterOrUpdater, useSetRecoilState } from "recoil";
 import logo from "../img/HurmonyTrans.png";
 import { GoogleLogin, GoogleUseUser } from "../lib/auth";
 import { auth } from "../lib/firebase/firebase";
-import { authState, AuthState, UserState } from "../lib/recoil/authRecoil";
+//import { authState, AuthState, UserState } from "../lib/recoil/authRecoil";
 
 //Todo:一通り作ったらflex対応
 
@@ -24,7 +24,7 @@ const Signin = () => {
   const [passwordShow, setPassWordShow] = useState(false);
   const handlePasswordClick = () => setPassWordShow(!passwordShow);
 
-  const setAuth: SetterOrUpdater<AuthState> = useSetRecoilState(authState);
+  //const setAuth: SetterOrUpdater<AuthState> = useSetRecoilState(authState);
   const provider = new GoogleAuthProvider();
   const GoogleUser = GoogleUseUser();
 
