@@ -1,3 +1,4 @@
+import LogoutButton from "@/src/Components/Button/LogoutButton";
 import MatchingTargetModal from "@/src/Components/Modal/MatchingTargetModal";
 import {
   Avatar,
@@ -111,6 +112,7 @@ const MyPage = () => {
             <hr />
           </Container>
         </Box>
+        <LogoutButton />
       </Center>
     </Box>
   );

@@ -48,7 +48,9 @@ const Signup = () => {
       checked: false,
     },
   ]);
-  const [checkFlag, setCheckFlag] = useState(false);
+  const [checkFlag, setCheckFlag] = useState(
+    "" || "出演者" || "主催者" || "両方"
+  );
 
   //パスワード表示切り替え
   const handlePasswordClick = () => setPassWordShow(!passwordShow);
@@ -58,13 +60,24 @@ const Signup = () => {
   //checkboxの状態を管理
   const checkBoxHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newDivChecks = [...DivCheck];
-    newDivChecks.map((check) => {
+    newDivChecks.map((check: DivCheck) => {
       if (check.name === e.target.value) {
         check.checked = !check.checked;
-        if (check.checked === true && checkFlag !== true) {
-          setCheckFlag(true);
-        } else if (check.checked === false && checkFlag !== false) {
-          setCheckFlag(false);
+        if (
+          check.checked === true &&
+          (checkFlag === "出演者" || checkFlag === "主催者")
+        ) {
+          if (checkFlag === "出演者" && checkFlag === "主催者") {
+            setCheckFlag("両方");
+          } else {
+            setCheckFlag(check.name);
+          }
+        } else if (check.checked === false && checkFlag !== "") {
+          if (checkFlag === "両方") {
+            setCheckFlag(check.name);
+          } else {
+            setCheckFlag("");
+          }
         }
       }
       return newDivChecks;
@@ -73,7 +86,10 @@ const Signup = () => {
   };
 
   //会員登録処理
-  const singUpHandler = async () => {
+  const singUpHandler = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
     const usersCollectionRef = collection(db, "users");
 
     try {
@@ -87,6 +103,7 @@ const Signup = () => {
       });
       router.push("/mypage");
     } catch (error: any) {
+      console.log(error);
       switch (error.toString()) {
         case "auth/invalid-email":
           alert("正しいメールアドレスを入力してください");
@@ -206,13 +223,15 @@ const Signup = () => {
           <Center>
             <Box marginLeft="3rem" display="contents">
               <Button
-                onClick={singUpHandler}
+                onClick={(e) => {
+                  singUpHandler;
+                }}
                 isDisabled={
                   userEmail == "" ||
                   userName == "" ||
                   userPassword == "" ||
                   userPassword.length < 8 ||
-                  checkFlag == false
+                  checkFlag == ""
                 }
               >
                 登録
