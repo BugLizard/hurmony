@@ -7,7 +7,6 @@ import {
   InputGroup,
   InputRightElement,
   Text,
-  Link,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 

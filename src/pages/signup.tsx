@@ -2,8 +2,6 @@ import {
   Box,
   Button,
   Center,
-  Checkbox,
-  CheckboxGroup,
   FormControl,
   FormLabel,
   Heading,
@@ -11,12 +9,13 @@ import {
   InputGroup,
   InputRightElement,
   Link,
+  MenuItem,
+  Select,
   Stack,
 } from "@chakra-ui/react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { addDoc, collection, setDoc } from "firebase/firestore";
 import NextImage from "next/image";
-import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import logo from "../img/HurmonyTrans.png";
@@ -25,8 +24,10 @@ import { auth, db } from "../lib/firebase/firebase";
 //Todo:一通り作ったらflex対応
 
 interface DivCheck {
+  id: number;
   name: string;
   checked: boolean;
+  disabled: boolean;
 }
 
 const Signup = () => {
@@ -37,53 +38,12 @@ const Signup = () => {
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
-  //チェックボックス群
-  const [DivCheck, setDivCheck] = useState<DivCheck[]>([
-    {
-      name: "出演者",
-      checked: false,
-    },
-    {
-      name: "主催者",
-      checked: false,
-    },
-  ]);
-  const [checkFlag, setCheckFlag] = useState(
-    "" || "出演者" || "主催者" || "両方"
-  );
+  const [useOrganization, setUseOrganization] = useState("");
 
   //パスワード表示切り替え
   const handlePasswordClick = () => setPassWordShow(!passwordShow);
 
   const router = useRouter();
-
-  //checkboxの状態を管理
-  const checkBoxHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newDivChecks = [...DivCheck];
-    newDivChecks.map((check: DivCheck) => {
-      if (check.name === e.target.value) {
-        check.checked = !check.checked;
-        if (
-          check.checked === true &&
-          (checkFlag === "出演者" || checkFlag === "主催者")
-        ) {
-          if (checkFlag === "出演者" && checkFlag === "主催者") {
-            setCheckFlag("両方");
-          } else {
-            setCheckFlag(check.name);
-          }
-        } else if (check.checked === false && checkFlag !== "") {
-          if (checkFlag === "両方") {
-            setCheckFlag(check.name);
-          } else {
-            setCheckFlag("");
-          }
-        }
-      }
-      return newDivChecks;
-    });
-    setDivCheck(newDivChecks);
-  };
 
   //会員登録処理
   const singUpHandler = async (
@@ -98,10 +58,9 @@ const Signup = () => {
         name: userName,
         mail: userEmail,
         password: userPassword,
-        divAct: DivCheck[0].checked,
-        divOrganize: DivCheck[1].checked,
+        organization: useOrganization,
       });
-      router.push("/mypage");
+      router.push("/profileEdit");
     } catch (error: any) {
       console.log(error);
       switch (error.toString()) {
@@ -196,42 +155,37 @@ const Signup = () => {
           </FormControl>
 
           <FormControl isRequired>
-            <FormLabel marginTop="20px">利用区分(2つ選択可)</FormLabel>
-            {DivCheck.map((check) => {
-              return (
-                <CheckboxGroup key={check.name}>
-                  <Stack
-                    spacing={[1, 5]}
-                    direction={["column", "row"]}
-                    marginTop="20px"
-                  >
-                    <Checkbox
-                      id={check.name}
-                      value={check.name}
-                      onChange={(e) => {
-                        checkBoxHandler(e);
-                      }}
-                    >
-                      {check.name}
-                    </Checkbox>
-                  </Stack>
-                </CheckboxGroup>
-              );
-            })}
+            <FormLabel marginTop="20px">利用区分</FormLabel>
+            <Stack
+              spacing={[1, 5]}
+              direction={["column", "row"]}
+              marginTop="20px"
+            >
+              <Select
+                placeholder="区分を選択してください"
+                onChange={(e) => {
+                  setUseOrganization(e.target.value);
+                }}
+              >
+                <option value={"出演者"}>出演者</option>
+                <option value={"共演者"}>共演者</option>
+                <option value={"両方"}>両方</option>
+              </Select>
+            </Stack>
           </FormControl>
           <br />
           <Center>
             <Box marginLeft="3rem" display="contents">
               <Button
                 onClick={(e) => {
-                  singUpHandler;
+                  singUpHandler(e);
                 }}
                 isDisabled={
                   userEmail == "" ||
                   userName == "" ||
                   userPassword == "" ||
                   userPassword.length < 8 ||
-                  checkFlag == ""
+                  useOrganization == ""
                 }
               >
                 登録
@@ -240,12 +194,13 @@ const Signup = () => {
             </Box>
           </Center>
           <Center>
-            <Box marginLeft="3rem" display="contents">
-              <NextLink href={"/signin"}>
-                <Link marginTop="10px" fontSize="1xs">
-                  ログインはこちら
-                </Link>
-              </NextLink>
+            <Box
+              marginLeft="3rem"
+              display="contents"
+              marginTop="10px"
+              fontSize="1xs"
+            >
+              <Link href="/signin">ログインはこちら</Link>
             </Box>
           </Center>
         </Box>
