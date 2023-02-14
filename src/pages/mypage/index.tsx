@@ -1,7 +1,10 @@
 import MatchingTargetModal from "@/src/Components/Modal/MatchingTargetModal";
+import { AuthGuard } from "@/src/lib/auth/component/AuthGuard/AuthGuard";
+import { useAuthContext } from "@/src/lib/auth/provider/AuthProvider";
 import {
   Avatar,
   Box,
+  Button,
   Center,
   Container,
   Heading,
@@ -12,8 +15,13 @@ import React from "react";
 import Header from "../../Components/Header/Header";
 
 const MyPage = () => {
+  const { user } = useAuthContext();
+
+  const userKakunin = () => {
+    console.log(user);
+  };
   return (
-    <Box>
+    <AuthGuard>
       <Header />
       <Center>
         <Box
@@ -52,6 +60,7 @@ const MyPage = () => {
               >
                 ピアノ太郎
               </Text>
+              <Button onClick={userKakunin}></Button>
             </Center>
             <hr />
           </Container>
@@ -112,7 +121,7 @@ const MyPage = () => {
           </Container>
         </Box>
       </Center>
-    </Box>
+    </AuthGuard>
   );
 };
 

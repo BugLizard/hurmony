@@ -15,7 +15,7 @@ import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import NextImage from "next/image";
 import { useRouter } from "next/router";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import logo from "../img/HurmonyTrans.png";
 import { auth } from "../lib/firebase/firebase";
@@ -40,7 +40,6 @@ const Signin = () => {
   const toast = useToast();
 
   const router = useRouter();
-  const isReady = router.isReady;
 
   const handlePasswordClick = () => setPassWordShow(!passwordShow);
 

@@ -1,20 +1,41 @@
+import { useAuthContext } from "@/src/lib/auth/provider/AuthProvider";
 import { auth } from "@/src/lib/firebase/firebase";
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, useToast } from "@chakra-ui/react";
+import { FirebaseError } from "firebase/app";
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 
 const LogoutButton = () => {
   const router = useRouter();
+  const { user } = useAuthContext();
+  const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
 
   const logout = async () => {
-    await signOut(auth);
-    router.push("/signin");
+    setIsLoading(true);
+    try {
+      await signOut(auth);
+      toast({
+        title: "ログアウトしました",
+        status: "success",
+        position: "top",
+      });
+      router.push("/signin");
+    } catch (e) {
+      if (e instanceof FirebaseError) {
+        console.log(e);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <Box>
-      <Button onClick={logout}>Logout</Button>
+      <Button onClick={logout} isLoading={isLoading}>
+        Logout
+      </Button>
     </Box>
   );
 };
