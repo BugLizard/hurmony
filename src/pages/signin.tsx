@@ -22,10 +22,14 @@ import { auth } from "../lib/firebase/firebase";
 
 import type { User } from "@firebase/auth";
 import { FirebaseError } from "firebase/app";
+import { useAuthContext } from "../lib/auth/provider/AuthProvider";
+import { AuthGuard } from "../lib/auth/component/AuthGuard/AuthGuard";
 
 //Todo:一通り作ったらflex対応
 
 const Signin = () => {
+  //ログイン状況
+  const { user } = useAuthContext();
   //フォーム
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
@@ -35,16 +39,8 @@ const Signin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
 
-  // const [user, setUser] = useState<User | null>();
-
   const router = useRouter();
-
-  //ログイン状態の監視
-  // useEffect(() => {
-  //   onAuthStateChanged(auth, (currentUser) => {
-  //     setUser(currentUser);
-  //   });
-  // }, []);
+  const isReady = router.isReady;
 
   const handlePasswordClick = () => setPassWordShow(!passwordShow);
 
@@ -72,19 +68,12 @@ const Signin = () => {
         console.log(e);
       }
     } finally {
-      setIsLoading(false);
     }
-  };
-
-  const goToMyPage = () => {
-    return router.push("/mypage");
+    setIsLoading(false);
   };
 
   return (
-    <>
-      {/* {user ? (
-        { goToMyPage }
-      ) : ( */}
+    <AuthGuard>
       <Box display="flex" justifyContent="space-between" marginTop="100px">
         <Box boxSize="left">
           <Box
@@ -172,8 +161,7 @@ const Signin = () => {
           </Box>
         </Box>
       </Box>
-      {/* )} */}
-    </>
+    </AuthGuard>
   );
 };
 

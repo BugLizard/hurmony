@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <RecoilRoot>
       <ChakraProvider>
-        <AuthProvider></AuthProvider>
+        <AuthProvider>
           <Component {...pageProps} />
         </AuthProvider>
       </ChakraProvider>
