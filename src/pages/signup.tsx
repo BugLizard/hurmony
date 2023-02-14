@@ -60,7 +60,7 @@ const Signup = () => {
         password: userPassword,
         organization: useOrganization,
       });
-      router.push("/profileEdit");
+      router.push("/mypage/profileEdit");
     } catch (error: any) {
       console.log(error);
       switch (error.toString()) {
