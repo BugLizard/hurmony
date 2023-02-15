@@ -1,18 +1,47 @@
+import { db } from "@/src/lib/firebase/firebase";
 import {
-  Avatar,
   Box,
   Button,
   Center,
   Container,
   Heading,
+  Image,
   Input,
-  Text,
   Textarea,
   WrapItem,
 } from "@chakra-ui/react";
-import React from "react";
+import { doc, setDoc } from "firebase/firestore";
+import React, { useState } from "react";
 
 const ProfileEdit = () => {
+  //フォーム用
+  const [userName, setUserName] = useState("");
+  const [OrganizationName, setOrganizationName] = useState("");
+  const [ProfileDetail, setProfileDetail] = useState("");
+
+  //画像アップロード用
+  const [image, setImage] = useState<File | null>(null);
+  const [createObjectURL, setCreateObjectURL] = useState("");
+
+  const uploadToClient = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+
+      setImage(file);
+      setCreateObjectURL(URL.createObjectURL(file));
+    }
+  };
+
+  const updateProfile = async () => {
+    const newProfile = {
+      name: userName,
+      organization: OrganizationName,
+      profileDetail: ProfileDetail,
+    };
+    const docRef = doc(db, "users");
+    await setDoc(docRef, newProfile);
+  };
+
   return (
     <Box>
       <Center>
@@ -25,17 +54,30 @@ const ProfileEdit = () => {
           textAlign="center"
           display="flex"
         >
-          <WrapItem>
-            <Button>UpLoad</Button>
-          </WrapItem>
+          <Image src={createObjectURL} />
+        </Box>
+      </Center>
+      <Center>
+        <Box
+          marginTop="1rem"
+          justifyContent="center"
+          alignItems="center"
+          textAlign="center"
+          display="flex"
+        >
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={(e) => uploadToClient(e)}
+          />
         </Box>
       </Center>
       <Center>
         <Box
           boxSize="-webkit-max-content"
           bg="#78BBE6"
-          marginTop="50px"
           borderRadius="1%"
+          marginTop="1rem"
         >
           <Container>
             <Center>
@@ -52,6 +94,7 @@ const ProfileEdit = () => {
                 width="auto"
                 variant="filled"
                 mb="25px"
+                onChange={(e) => setUserName(e.target.value)}
               />
             </Center>
             <hr />
@@ -71,6 +114,7 @@ const ProfileEdit = () => {
                 width="auto"
                 variant="filled"
                 mb="25px"
+                onChange={(e) => setOrganizationName(e.target.value)}
               />
             </Center>
             <hr />
@@ -88,6 +132,7 @@ const ProfileEdit = () => {
                 boxSize="xl"
                 bg="white"
                 placeholder="プロフィールを入力"
+                onChange={(e) => setProfileDetail(e.target.value)}
               />
             </Center>
           </Container>
