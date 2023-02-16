@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import NextImage from "next/image";
 import { useRouter } from "next/router";
 
@@ -20,7 +20,6 @@ import React, { useState } from "react";
 import logo from "../img/HurmonyTrans.png";
 import { auth } from "../lib/firebase/firebase";
 
-import type { User } from "@firebase/auth";
 import { FirebaseError } from "firebase/app";
 import { useAuthContext } from "../lib/auth/provider/AuthProvider";
 import { AuthGuard } from "../lib/auth/component/AuthGuard/AuthGuard";

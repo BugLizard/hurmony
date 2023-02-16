@@ -1,4 +1,4 @@
-import { db } from "@/src/lib/firebase/firebase";
+import { db, storage } from "@/src/lib/firebase/firebase";
 import {
   Box,
   Button,
@@ -8,10 +8,11 @@ import {
   Image,
   Input,
   Textarea,
-  WrapItem,
 } from "@chakra-ui/react";
 import { doc, setDoc } from "firebase/firestore";
+import { ref, uploadBytes } from "firebase/storage";
 import React, { useState } from "react";
+import { validateImage } from "image-validator";
 
 const ProfileEdit = () => {
   //フォーム用
@@ -20,13 +21,34 @@ const ProfileEdit = () => {
   const [ProfileDetail, setProfileDetail] = useState("");
 
   //画像アップロード用
-  const [image, setImage] = useState<File | null>(null);
+
+  const [image, setImage] = useState<File>(null!);
+  //画像URL
   const [createObjectURL, setCreateObjectURL] = useState("");
 
-  const uploadToClient = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // 画像のバリデーション
+  const validateFile = async (file: File) => {
+    // 3GBを最大のファイルサイズに設定
+    const limitFileSize = 800 * 1024;
+    if (file.size > limitFileSize) {
+      alert("ファイルサイズが大きすぎます。\n800kb以下にしてください。");
+      return false;
+    }
+    const isValidImage = await validateImage(file);
+    if (!isValidImage) {
+      alert("画像ファイル以外はアップロードできません。");
+      return false;
+    }
+    return true;
+  };
+
+  const uploadToClient = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-
+      //800kb以下はエラー
+      if (!(await validateFile(file))) return;
       setImage(file);
       setCreateObjectURL(URL.createObjectURL(file));
     }
@@ -38,6 +60,16 @@ const ProfileEdit = () => {
       organization: OrganizationName,
       profileDetail: ProfileDetail,
     };
+    //アバターアップロード処理
+    const storageRef = ref(storage, `image/${image.name}`);
+    await uploadBytes(storageRef, image)
+      .then((snapshot) => {
+        console.log("画像アップロード成功");
+      })
+      .catch((error) => {
+        console.log("画像アップロード失敗");
+      });
+
     const docRef = doc(db, "users");
     await setDoc(docRef, newProfile);
   };
