@@ -11,8 +11,8 @@ import {
 } from "@chakra-ui/react";
 import { doc, setDoc } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
-import React, { useState } from "react";
 import { validateImage } from "image-validator";
+import React, { useState } from "react";
 
 const ProfileEdit = () => {
   //フォーム用
