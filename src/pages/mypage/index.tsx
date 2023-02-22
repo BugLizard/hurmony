@@ -4,7 +4,6 @@ import { useAuthContext } from "@/src/lib/auth/provider/AuthProvider";
 import {
   Avatar,
   Box,
-  Button,
   Center,
   Container,
   Heading,
@@ -15,11 +14,8 @@ import React from "react";
 import Header from "../../Components/Header/Header";
 
 const MyPage = () => {
-  const { user } = useAuthContext();
+  const user = useAuthContext();
 
-  const userKakunin = () => {
-    console.log(user);
-  };
   return (
     <AuthGuard>
       <Header />
@@ -60,7 +56,6 @@ const MyPage = () => {
               >
                 ピアノ太郎
               </Text>
-              <Button onClick={userKakunin}></Button>
             </Center>
             <hr />
           </Container>

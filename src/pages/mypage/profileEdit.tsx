@@ -12,6 +12,8 @@ import {
 import { doc, setDoc } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 import { validateImage } from "image-validator";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 
 const ProfileEdit = () => {
@@ -21,10 +23,11 @@ const ProfileEdit = () => {
   const [ProfileDetail, setProfileDetail] = useState("");
 
   //画像アップロード用
-
   const [image, setImage] = useState<File>(null!);
   //画像URL
   const [createObjectURL, setCreateObjectURL] = useState("");
+
+  const router = useRouter();
 
   // 画像のバリデーション
   const validateFile = async (file: File) => {
@@ -54,7 +57,8 @@ const ProfileEdit = () => {
     }
   };
 
-  const updateProfile = async () => {
+  const updateProfile = async (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     const newProfile = {
       name: userName,
       organization: OrganizationName,
@@ -72,6 +76,7 @@ const ProfileEdit = () => {
 
     const docRef = doc(db, "users");
     await setDoc(docRef, newProfile);
+    router.push("/mypage");
   };
 
   return (
@@ -175,8 +180,17 @@ const ProfileEdit = () => {
               alignItems="center"
               marginBottom="20px"
             >
-              <Button width="100px">編集</Button>
-              <Button width="100px">戻る</Button>
+              <Button
+                width="100px"
+                onClick={(e) => {
+                  updateProfile(e);
+                }}
+              >
+                編集
+              </Button>
+              <Link href="/mypage">
+                <Button width="100px">戻る</Button>
+              </Link>
             </Center>
           </Container>
         </Box>

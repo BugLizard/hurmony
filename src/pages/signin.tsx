@@ -11,7 +11,11 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import NextImage from "next/image";
 import { useRouter } from "next/router";
 
@@ -28,7 +32,7 @@ import { AuthGuard } from "../lib/auth/component/AuthGuard/AuthGuard";
 
 const Signin = () => {
   //ログイン状況
-  const { user } = useAuthContext();
+  const user = useAuthContext();
   //フォーム
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
@@ -43,19 +47,28 @@ const Signin = () => {
   const handlePasswordClick = () => setPassWordShow(!passwordShow);
 
   const handleLogin = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    type: string
   ) => {
     setIsLoading(true);
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, userEmail, userPassword);
-      setUserEmail("");
-      setUserPassword("");
-      toast({
-        title: "ログインしました",
-        status: "success",
-        position: "top",
-      });
+      switch (type) {
+        case "general":
+          await signInWithEmailAndPassword(auth, userEmail, userPassword);
+          setUserEmail("");
+          setUserPassword("");
+          toast({
+            title: "ログインしました",
+            status: "success",
+            position: "top",
+          });
+          break;
+        case "gmail":
+          const provider = new GoogleAuthProvider();
+          signInWithPopup(auth, provider);
+          break;
+      }
     } catch (e) {
       toast({
         title: "エラーが発生しました",
@@ -138,13 +151,19 @@ const Signin = () => {
                   marginTop="20px"
                   isLoading={isLoading}
                   onClick={(e) => {
-                    handleLogin(e);
+                    handleLogin(e, "general");
                   }}
                 >
                   ログイン
                 </Button>
                 <br />
-                <Button marginTop="10px" marginRight="10px">
+                <Button
+                  marginTop="10px"
+                  marginRight="10px"
+                  onClick={(e) => {
+                    handleLogin(e, "gmail");
+                  }}
+                >
                   Googleでログイン
                 </Button>
                 <br />

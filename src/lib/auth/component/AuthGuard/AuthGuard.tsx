@@ -1,30 +1,29 @@
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { Box } from "@chakra-ui/react";
-import { useAuthContext } from "../../provider/AuthProvider";
+import { useAuthContext, User } from "../../provider/AuthProvider";
 
 type Props = {
-  children: ReactNode;
+  children: ((user: User) => ReactNode) | ReactNode;
 };
 
 export const AuthGuard = ({ children }: Props) => {
-  const { user } = useAuthContext();
-  const { push } = useRouter();
-  const { pathname } = useRouter();
+  const user = useAuthContext();
+  const router = useRouter();
 
   if (typeof user === "undefined") {
     return <Box>読み込み中...</Box>;
   }
-  if (user === null && pathname !== "/signin") {
-    push("/signin");
+  if (user === null && router.pathname !== "/signin") {
+    router.push("/signin");
     return null;
   }
   if (
-    (user !== null && pathname === "/signin") ||
-    pathname === "/signup" ||
-    pathname === "/"
+    (user !== null && router.pathname === "/signin") ||
+    router.pathname === "/signup" ||
+    router.pathname === "/"
   ) {
-    push("/mypage");
+    router.push("/mypage");
     return null;
   }
 
