@@ -8,14 +8,25 @@ import React, {
 
 import { onAuthStateChanged } from "@firebase/auth";
 import { auth, db } from "../../firebase/firebase";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  serverTimestamp,
+  setDoc,
+  FieldValue,
+} from "firebase/firestore";
 
 export type User = {
-  id: string;
   name: string;
   photoURL: string;
+  organization: string;
+  profileDetail: string;
+  id: string;
+  createdAt: FieldValue;
+  updateAt: FieldValue;
   email: string;
-  createdAt: number;
+  password: string;
+  prefecture: string;
 };
 
 type GlobalAuthState = User | null | undefined;
@@ -42,7 +53,12 @@ export const AuthProvider = ({ children }: Props) => {
             name: user.displayName!,
             photoURL: user.photoURL!,
             email: user.email!,
-            createdAt: Date.now(),
+            organization: "",
+            profileDetail: "",
+            createdAt: serverTimestamp(),
+            updateAt: serverTimestamp(),
+            password: "",
+            prefecture: "",
           };
 
           setDoc(ref, appUser).then(() => {
