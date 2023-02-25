@@ -1,3 +1,4 @@
+import { useUser } from "@/src/lib/auth/component/getAuth/useUser";
 import { db, storage } from "@/src/lib/firebase/firebase";
 import { postImage } from "@/src/lib/profileEdit/upload";
 import { userDbState } from "@/src/lib/store/Atom";
@@ -23,7 +24,7 @@ import {
 import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 
 const ProfileEdit = () => {
@@ -40,6 +41,7 @@ const ProfileEdit = () => {
 
   //プロフィールデータ取得
   const [profile, setProfile] = useRecoilState(userDbState);
+  const user = useUser();
 
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -61,7 +63,7 @@ const ProfileEdit = () => {
     //アバターアップロード処理
     const result = await postImage(image);
     console.log(result);
-    const userRef = doc(db, "users", profile.id);
+    const userRef = doc(db, "users");
 
     //名前
     if (userName !== "") {
