@@ -8,7 +8,6 @@ import React, { useState } from "react";
 
 const LogoutButton = () => {
   const router = useRouter();
-  const { user } = useAuthContext();
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
 
